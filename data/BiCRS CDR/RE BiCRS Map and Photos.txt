@@ -1,0 +1,196 @@
+From:	Aui, Alvina
+Sent:	Monday, November 13, 2023 9:19 PM
+To:	Stanley, Alexander Jordan; Baker, Sarah E.; ECW_climatenow
+Subject:	RE: BiCRS Map and Photos
+Attachments:	Regional Summary.xlsx
+
+Hi Alex, 
+
+Here’s the data for the map that you are building. 
+
+In the excel spreadsheet, you’ll see 3 sheets:
+1.	Regional cost, CDR, tech (Wet) – this includes both low moisture and wet waste biomass 
+technology
+2.	Regional cost, CDR, tech (Dry) – this includes only low moisture biomass technology
+3.	CO2 by transport mode – Amount of CO2 removed & transported by the different modes
+
+In the first two tabs – you will see the technology chosen in each region, it’s cost and CO2 removal 
+potential. 
+Columns F & G represents the total CO2 removed per region and weighted cost per region for all 
+technologies. 
+
+The scenario for these data is the 2050 Zero Cropland, 90% removal target. 
+
+We may need to consult @Baker, Sarah E. on which data we want to use, whether only low moisture 
+biomass technology or both low moisture and wet waste biomass (both datas are available). 
+
+I don’t think I’ll be able to meet this week as I’m traveling & attending a workshop in DC but will respond 
+to emails if you have any questions about the data. I am available to meet next week, if needed. Let me 
+know ??
+
+Best, 
+Alvina
+
+
+From: Stanley, Alexander Jordan <stanley27@llnl.gov>  
+Sent: Thursday, November 9, 2023 1:46 PM 
+To: Aui, Alvina <aui1@llnl.gov>; Baker, Sarah E. <baker74@llnl.gov>; ECW_climatenow 
+<emma@climatenow.com> 
+Subject: RE: BiCRS Map and Photos
+
+Ya, that will work. Let’s aim for Wednesday then.
+
+From: Aui, Alvina <aui1@llnl.gov>  
+Sent: Thursday, November 9, 2023 1:46 PM 
+To: Stanley, Alexander Jordan <stanley27@llnl.gov>; Baker, Sarah E. <baker74@llnl.gov>; 
+ECW_climatenow <emma@climatenow.com> 
+Subject: RE: BiCRS Map and Photos
+
+Hi Alex, 
+
+I can try, but Monday might be a little tough. Mark has some proposal review & I’m traveling for a 
+workshop next week. I can try mid of next week – hopefully that will be ok?
+
+Best, 
+Alvina 
+
+From: Stanley, Alexander Jordan <stanley27@llnl.gov>  
+Sent: Thursday, November 9, 2023 1:43 PM 
+To: Aui, Alvina <aui1@llnl.gov>; Baker, Sarah E. <baker74@llnl.gov>; ECW_climatenow 
+<emma@climatenow.com> 
+Subject: RE: BiCRS Map and Photos
+
+Sounds good. Can you get to me by Monday next week? I’m looking to create all these maps by the end 
+of next week.
+
+From: Aui, Alvina <aui1@llnl.gov>  
+Sent: Thursday, November 9, 2023 1:42 PM 
+To: Stanley, Alexander Jordan <stanley27@llnl.gov>; Baker, Sarah E. <baker74@llnl.gov>; 
+ECW_climatenow <emma@climatenow.com> 
+Subject: RE: BiCRS Map and Photos
+
+Hi Alex, 
+
+I’m working with Mark (he’s helped us generate these maps) to get the data to you. Once, I have it, we 
+can do a data walkthrough. When would you like the data by? 
+
+Best, 
+Alvina 
+
+From: Stanley, Alexander Jordan <stanley27@llnl.gov>  
+Sent: Thursday, November 9, 2023 12:25 PM 
+To: Baker, Sarah E. <baker74@llnl.gov>; ECW_climatenow <emma@climatenow.com>; Aui, Alvina 
+<aui1@llnl.gov> 
+Subject: RE: BiCRS Map and Photos
+
+Ah, yes, you’re right. Best to send data more representative of the bicrs chapter. Sorry for the confusion.
+
+From: Baker, Sarah E. <baker74@llnl.gov>  
+Sent: Thursday, November 9, 2023 12:22 PM 
+To: Stanley, Alexander Jordan <stanley27@llnl.gov>; ECW_climatenow <emma@climatenow.com>; Aui, 
+Alvina <aui1@llnl.gov> 
+Subject: RE: BiCRS Map and Photos
+
+Hi Alex
+Im confused, I thought the data were for the website/dashboard?
+
+
+Alvina is very familiar with the data in the spreadsheet Wenqin sent, in case you want to walk through 
+how to use it. Wenqin is sick. 
+
+Alvina can also send data more representative of the BiCRS chapter-
+The data you have are representative of the exec sum supply curve, which is a bit different than the data 
+in the BiCRS chapter- because of the SAF. Also, If you wanted transportation modes for each region, I 
+don’t believe we have those for the data you have. 
+
+Up to you and Emma, just let us know what you are looking for
+
+Sarah
+
+
+
+
+From: Stanley, Alexander Jordan <stanley27@llnl.gov>  
+Sent: Thursday, November 9, 2023 9:38 AM 
+To: Baker, Sarah E. <baker74@llnl.gov>; ECW_climatenow <emma@climatenow.com> 
+Subject: RE: BiCRS Map and Photos
+
+I haven’t got any data since Wenqin sent this 50% SAF production data, but this might be enough. It’s for 
+a high-level executive summary figure, and it has data on both technologies and feedstocks, so if this 
+tells enough of the overall bicrs story, I can use this.
+
+-Alex
+
+From: Baker, Sarah E. <baker74@llnl.gov>  
+Sent: Thursday, November 9, 2023 8:51 AM 
+To: ECW_climatenow <emma@climatenow.com> 
+Cc: Stanley, Alexander Jordan <stanley27@llnl.gov> 
+Subject: RE: BiCRS Map and Photos
+
+Hi Emma
+Yes, we had a brief meeting. Alex-did Alvina and Whitney send you what you need? I can catch up again 
+today too.
+
+Sarah 
+
+From: Emma Crow-Willard <emma@climatenow.com>  
+Sent: Thursday, November 9, 2023 7:45 AM 
+To: Baker, Sarah E. <baker74@llnl.gov> 
+Cc: Stanley, Alexander Jordan <stanley27@llnl.gov> 
+Subject: Re: BiCRS Map and Photos
+
+Hi Sarah,  
+Were you and Alex able to connect? 
+If you need me to join, I am available today between 10:30-11:45, 12:15-1pm, or after 2pm.
+
+Emma
+
+On Tue, Nov 7, 2023 at 10:06?AM Baker, Sarah E. <baker74@llnl.gov> wrote:
+Hi Emma and Alex
+I am going to propose a meeting today because I think best if I understand what data Alex needs.
+ 
+I will check on the photos
+ 
+Thanks!
+ 
+Sarah 
+ 
+From: Emma Crow-Willard <emma@climatenow.com>  
+Sent: Tuesday, November 7, 2023 8:59 AM 
+To: Baker, Sarah E. <baker74@llnl.gov> 
+Cc: Stanley, Alexander Jordan <stanley27@llnl.gov> 
+Subject: BiCRS Map and Photos
+ 
+Hi Sarah,
+I hope you are well!
+I am writing about a few sensitive matters with the release of the R2R report coming up. Please get 
+back to us ASAP by today or tomorrow at the absolute latest!
+1.       Website Map: As I've mentioned, we're putting an interactive BiCRS map on the R2R 
+website (coming soon). Alex Stanley (CCed) is creating the maps on plotly.  
+- Are the BiCRS maps done and can you please ensure that Alex has the up-to-date data so 
+that the interactive map on the website is accurate? 
+- For the interactive map, we are planning to show the 19 regions you analyzed plus: 
+    -- overall co2 removal potential, cumulative by 2050, per region for BiCRS 
+    -- region name 
+    -- cost per metric ton of co2 removed in each region 
+    -- top 5 counties for BiCRS co2 removal in each region 
+    -- BiCRS EEEJ value in each region 
+    -- top two BiCRS pathways/methods in each region 
+- Please let me know if this looks good or you would recommend we show something else.
+2.       Video: Please send over any photos/video you might have of you working in the 
+lab/field! 
+ 
+ 
+Thank you!
+ 
+-- 
+Emma Crow-Willard
+Managing Producer, Climate Now
+ 
+www.climatenow.com
+Climate Now | LinkedIn
+Facebook: @weareclimatenow
+Instagram: @weareclimatenow
+Twitter: @weareclimatenow
+ 
+Podcast: Apple | Spotify | Google | Audible
