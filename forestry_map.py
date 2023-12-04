@@ -1,3 +1,4 @@
+from tkinter import font
 from requests import get
 import json
 import pandas as pd
@@ -37,7 +38,7 @@ w_cdr_df = pd.read_csv(forestry_path + '\\' + 'western_county_potentials_with_na
 forest_names = ['Northeastern Forests', 'Southeastern Forests', 'Western Forests']
 forestry_cdr_dfs = {forest:process_forestry_cdr(df) for forest, df in zip(forest_names, [ne_cdr_df, se_cdr_df, w_cdr_df])}
 forest_color_scales = {forest:color for forest, color in zip(forest_names, ['greens', 'blues', 'reds'])}
-
+color_axes = {forest:coloraxis for forest, coloraxis in zip(forest_names, ['coloraxis1', 'coloraxis2', 'coloraxis3'])}
 # geo json file
 from urllib.request import urlopen
 with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
@@ -60,17 +61,60 @@ for key, df in forestry_cdr_dfs.items():
         zmin=df['Total Tonnes CDR'].min(),
         zmax=df['Total Tonnes CDR'].max(),
         colorscale=forest_color_scales.get(key, 'viridis'),
+        # coloraxis=color_axes.get(key),
+        colorbar={'orientation':'h'},
         colorbar_title=key,
         name=key,
         customdata=df[['County, State', 'Total Tonnes CDR']],
         hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                        '<b>Cummulative CDR</b>: %{z:,.0f} Tonnes CO2<br>' +
+                        '<b>CDR Potential by 2050</b>: %{z:,.0f} Tonnes CO<sub>2</sub><br>' +
                         '<extra></extra>'))
     
     # Get rid of color bar. All color bars overlap right now, so it looks neater without them
-    fig.update_traces(showscale=False)
+    # fig.update_traces(showscale=False)
     
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+# assign each trace to new color axis
+for i, trace in enumerate(fig.data, 1):
+    trace.update(coloraxis=f"coloraxis{i}")
+
+# configure color axes
+fontsize=10
+
+fig.update_layout(
+    coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
+    coloraxis2={
+        "colorbar": {
+            "x": 0.9,
+            "len": 0.2,
+            "y": 0.8,
+            'title':'Northeastern Forests<br>CDR Potential by 2050',
+            'orientation':'h',
+            'titlefont':{'size':fontsize},
+            'tickfont':{'size':fontsize}},
+        "colorscale":'greens',
+    },
+    coloraxis3={
+        "colorbar": {"x": 0.9, 
+                     "len": 0.2, 
+                     "y": 0.6, 
+                     'title':'Southeastern Forests<br>CDR Potential by 2050',
+                     'orientation':'h',
+                     'titlefont':{'size':fontsize},
+                     'tickfont':{'size':fontsize}},
+        "colorscale":'blues'
+    },
+    coloraxis4={
+        "colorbar": {"x": 0.9, 
+                     "len": 0.2, 
+                     "y": 0.4,
+                     'title':'Western Forests<br>CDR Potential by 2050',
+                     'orientation':'h',
+                     'titlefont':{'size':fontsize},
+                     'tickfont':{'size':fontsize}},
+        "colorscale": 'reds',
+            })
 
 fig.show()
 fig.write_html('chapter_maps/forestry_map.html')

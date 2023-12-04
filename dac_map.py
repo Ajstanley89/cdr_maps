@@ -56,16 +56,30 @@ fig.add_trace(trace=go.Choropleth(
     colorscale='greens',
     customdata=dac_df[['County, State', 'Sorbent CDR Capacity', 'Sorbent Cost', 'Solvent Region CDR Capacity', 'Solvent Weighted Average Cost']],
     hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                    '<b>Sorbent CDR Capacity</b>: %{customdata[1]:,.0f} Tonnes CO2<br>' +
-                    '<b>Sorbent CDR Cost</b>: %{customdata[2]:,.2f} USD per Tonne CO2<br>' +
-                    '<b>Regional Solvent CDR Capacity</b>: %{customdata[3]:,.0f} Tonnes CO2<br>' +
-                    '<b>Regional Solvent CDR Cost</b>: %{customdata[4]:,.2f} USD per Tonne CO2<br>' +
+                    '<b>Sorbent CDR Potential by 2050</b>: %{customdata[1]:,.0f} Tonnes CO<sub>2</sub><br>' +
+                    '<b>Sorbent CDR Cost</b>: %{customdata[2]:,.2f} USD per Tonne CO<sub>2</sub><br>' +
+                    # '<b>Regional Solvent CDR Potential by 2050</b>: %{customdata[3]:,.0f} Tonnes CO<sub>2</sub><br>' +
+                    # '<b>Regional Solvent CDR Cost</b>: %{customdata[4]:,.2f} USD per Tonne CO<sub>2</sub><br>' +
                     '<extra></extra>'))
 
 # Get rid of color bar. All color bars overlap right now, so it looks neater without them
-fig.update_traces(showscale=False)
+# fig.update_traces(showscale=False)
+
+for i, trace in enumerate(fig.data, 1):
+    trace.update(coloraxis=f"coloraxis{i}")
     
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
+                  coloraxis2={"colorbar": {"x": 0.9, 
+                                           "len": 0.2, 
+                                           "y": 0.8, 
+                                           'title':'Potential Tonnes CO<sub>2</sub><br>Removed by 2050',
+                                           'orientation':'h',
+                                           'titlefont':{'size':10},
+                                           'tickfont':{'size':10}
+                                           },
+                                'colorscale':'greens',
+                                'cmax':dac_df['Sorbent CDR Capacity'].quantile(.98),
+                                'cmin':0})
 
 fig.show()
 fig.write_html('chapter_maps/dac_map.html')

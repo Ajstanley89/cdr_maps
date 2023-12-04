@@ -1,3 +1,4 @@
+from xml.etree.ElementPath import prepare_self
 from requests import get
 import json
 import pandas as pd
@@ -104,11 +105,11 @@ merge_soils_df = merged_soils_df.fillna(0)
 practices = merged_soils_df['Practice'].unique()
 
 # dict mapping color scale to practice
-n_colors = 10
-color_dict = {'Carbon Cropping':sns.light_palette("#eecf43", n_colors).as_hex(),
-              'Perennial Borders':sns.light_palette('#3182c1', n_colors).as_hex(), 
-              'Cover Crop':sns.light_palette('#59b375', n_colors).as_hex()}
-
+n_colors = 6
+color_dict = {'Carbon Cropping': ['#FFFFFF', "#eecf43"], #sns.diverging_palette('#FFFFFF', "#eecf43", n=n_colors).as_hex(),
+              'Perennial Borders': ['#FFFFFF', '#3182c1'], # sns.light_palette('#3182c1', n_colors).as_hex(), 
+              'Cover Crop': ['#FFFFFF', '#59b375'], # sns.light_palette('#59b375', n_colors).as_hex()
+            }
 # create multilevel column index for each practice
 pivot_df = merged_soils_df.pivot(index=['GEOID', 'GEO_ID', 'County, State'], columns='Practice').swaplevel(axis=1)
 idx = pd.IndexSlice
@@ -136,7 +137,7 @@ for practice in practices:
     df = df.fillna('No Data')
     # print(df.columns)
     # print(df.head())
-    print(f'Top cutoff Value {practice}:', df[('Cumulative', cdr_per_area_col)].quantile(.95))
+    print(f'95% cutoff Value {practice}:', df[('Cumulative', cdr_per_area_col)].quantile(.95))
     # create map
     fig.add_trace(trace=go.Choropleth(
         geojson=counties,
@@ -144,23 +145,69 @@ for practice in practices:
         locations=df['GEO_ID'],
         featureidkey='properties.GEO_ID',
         # z=np.log10(df[('Cumulative', cdr_per_area_col)]),
-        z=df[('Cumulative', cdr_per_area_col)],
-        zmax=df[('Cumulative', cdr_per_area_col)].quantile(.97),
-        zmin=df[('Cumulative', cdr_per_area_col)].min(),
+        z=df[(practice, cdr_per_area_col)],
+        zmax=df[(practice, cdr_per_area_col)].quantile(.95),
+        zmin=df[(practice, cdr_per_area_col)].min(),
         colorscale=color_dict.get(practice, 'reds'),
         customdata=df[[('Cumulative', 'Max Practice'), ('County, State', ''), 
                        ('Cumulative', cum_cdr_col), ('Cumulative', cdr_per_area_col), (practice, cost_cdr_col)]],
-        hovertemplate='<b>Top Practice</b>: %{customdata[0]}<br>' +
+        hovertemplate='<b>Top Practice per Area</b>: %{customdata[0]}<br>' +
                         '<b>County</b>: %{customdata[1]}<br>' +
-                        '<b>All Practices Cumulative CDR</b>: %{customdata[2]:,.0f} Tonnes CO2<br>' +
-                        '<b>All Practices CDR per Area</b>: %{customdata[3]:,.0f} Tonnes CO2 per Hectare<br>' +
-                        f'<b>{practice} CDR per Dollar</b>: ' + '%{customdata[4]:,.2f} Tonnes CO2 per USD<br>' +
+                        '<b>All Practices CDR Potential by 2050</b>: %{customdata[2]:,.0f} Tonnes CO<sub>2</sub><br>' +
+                        '<b>All Practices CDR per Area</b>: %{customdata[3]:,.0f} Tonnes CO<sub>2</sub> per Hectare<br>' +
+                        f'<b>{practice} CDR per Dollar</b>: ' + '%{customdata[4]:,.2f} Tonnes CO<sub>2</sub> per USD<br>' +
                         '<extra></extra>'))
     
     # Get rid of color bar. All color bars overlap right now, so it looks neater without them
-    fig.update_traces(showscale=False)
+    # fig.update_traces(showscale=False)
     
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+fontsize=10
+# assign each trace to new color axis
+for i, trace in enumerate(fig.data, 1):
+    trace.update(coloraxis=f"coloraxis{i}")
+
+# Add color scales
+fig.update_layout(
+    coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
+    coloraxis2={
+        "colorbar": {
+            "x": 0.9,
+            "len": 0.2,
+            "y": 0.8,
+            'title':'Carbon Cropping<br>Tonnes CO<sub>2</sub> per Hectare',
+            'orientation':'h',
+            'titlefont':{'size':fontsize},
+            'tickfont':{'size':fontsize}},
+        "colorscale":color_dict.get('Carbon Cropping'),
+        'cmax':pivot_df[('Carbon Cropping', cdr_per_area_col)].quantile(0.98),
+        'cmin':0
+    },
+    coloraxis3={
+        "colorbar": {"x": 0.9, 
+                     "len": 0.2, 
+                     "y": 0.6, 
+                     'title':'Perennial Borders<br>Tonnes CO<sub>2</sub> per Hectare',
+                     'orientation':'h',
+                     'titlefont':{'size':fontsize},
+                     'tickfont':{'size':fontsize}},
+        "colorscale":color_dict.get('Perennial Borders', 'Viridis'),
+        'cmax':pivot_df[('Perennial Borders', cdr_per_area_col)].quantile(0.98),
+        'cmin':0
+    },
+    coloraxis4={
+        "colorbar": {"x": 0.9, 
+                     "len": 0.2, 
+                     "y": 0.4,
+                     'title':'Cover Crop<br>Tonnes CO<sub>2</sub> per Hectare',
+                     'orientation':'h',
+                     'titlefont':{'size':fontsize},
+                     'tickfont':{'size':fontsize}},
+        "colorscale": color_dict.get('Cover Crop', 'Viridis'),
+        'cmax':pivot_df[('Cover Crop', cdr_per_area_col)].quantile(0.98),
+        'cmin':0
+            })
 
 fig.show()
 fig.write_html('chapter_maps/soils_map.html')

@@ -63,12 +63,25 @@ fig.add_trace(trace=go.Choropleth(
     colorscale='greens_r',
     customdata=geo_storage_cdr_df[['County, State', cost_col, 'Percentage']],
     hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                    '<b>Storage Cost</b>: %{customdata[1]:,.2f} USD per Tonne CO2<br>' +
-                    '<b>Percent in Storage Window</b>: %{customdata[2]:,.1f}%<br>'
+                    '<b>Storage Cost</b>: %{customdata[1]:,.2f} USD per Tonne CO<sub>2</sub><br>' +
+                    '<b>Percent Land Area in Storage Window</b>: %{customdata[2]:,.1f}%<br>'
                     '<extra></extra>'))
 
-# Get rid of color bar. All color bars overlap right now, so it looks neater without them
-fig.update_traces(showscale=False)
+for i, trace in enumerate(fig.data, 1):
+    trace.update(coloraxis=f"coloraxis{i}")
+    
+fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
+                  coloraxis2={"colorbar": {"x": 0.9, 
+                                           "len": 0.2, 
+                                           "y": 0.8, 
+                                           'title':'USD per Tonne CO<sub>2</sub>',
+                                           'orientation':'h',
+                                           'titlefont':{'size':10},
+                                           'tickfont':{'size':10}
+                                           },
+                                'colorscale':'greens_r',
+                                'cmax':40,
+                                'cmin':5.99})
     
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
