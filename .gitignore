@@ -1,5 +1,8 @@
 config.py
 
+# shapefiles are huge, so ignore them
+data\Geostorage\Lineshapes
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
