@@ -2,6 +2,9 @@ config.py
 
 # shapefiles are huge, so ignore them
 data\Geostorage\Lineshapes
+# ignore large soils files
+data\Soils CDR\SupplyCurve_Conservation Buffer2025_MIROC_ES2LPerformance.csv
+data\Soils CDR\SupplyCurve_Cover Crop2025_MIROC_ES2LPerformance.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
