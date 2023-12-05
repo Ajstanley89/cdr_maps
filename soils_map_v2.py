@@ -146,6 +146,14 @@ for i, trace in enumerate(fig.data, 1):
 
 # Add color scales
 fig.update_layout(
+    title={
+        'text': "$40 per Tonne CO<sub>2</sub>e",
+        'y':0.95,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top',
+        'yref': 'paper'
+        },
     coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
     coloraxis2={
         "colorbar": {
