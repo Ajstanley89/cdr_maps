@@ -29,6 +29,7 @@ solvent_df = solvent_df.rename(columns={'cty_region_DACcap_tpa':'Solvent Region 
 # round numbers
 sorbent_df['Sorbent CDR Capacity'] = sorbent_df['Sorbent CDR Capacity'].round(-3)
 solvent_df['Solvent Region CDR Capacity'] = solvent_df['Solvent Region CDR Capacity'].round(-3)
+sorbent_df['Sorbent Cost'] = sorbent_df['Sorbent Cost'].round(-1)
 
 # merge everthing together
 dac_df = sorbent_df.merge(solvent_df, on='county')
@@ -56,8 +57,8 @@ fig.add_trace(trace=go.Choropleth(
     colorscale='greens',
     customdata=dac_df[['County, State', 'Sorbent CDR Capacity', 'Sorbent Cost', 'Solvent Region CDR Capacity', 'Solvent Weighted Average Cost']],
     hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                    '<b>Sorbent CDR Potential by 2050</b>: %{customdata[1]:,.0f} Tonnes CO<sub>2</sub><br>' +
-                    '<b>Sorbent CDR Cost</b>: %{customdata[2]:,.2f} USD per Tonne CO<sub>2</sub><br>' +
+                    '<b>Adsorbent DACS CDR Potential </b>: %{customdata[1]:,.2e} Tonnes CO<sub>2</sub> Per Year<br>' +
+                    '<b>Adsorbent CDR Cost</b>: %{customdata[2]:,.0f} USD per Tonne CO<sub>2</sub><br>' +
                     # '<b>Regional Solvent CDR Potential by 2050</b>: %{customdata[3]:,.0f} Tonnes CO<sub>2</sub><br>' +
                     # '<b>Regional Solvent CDR Cost</b>: %{customdata[4]:,.2f} USD per Tonne CO<sub>2</sub><br>' +
                     '<extra></extra>'))
@@ -69,11 +70,11 @@ for i, trace in enumerate(fig.data, 1):
     trace.update(coloraxis=f"coloraxis{i}")
     
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
-                  coloraxis2={"colorbar": {"x": 0.9, 
-                                           "len": 0.2, 
-                                           "y": 0.8, 
-                                           'title':'Potential Tonnes CO<sub>2</sub><br>Removed by 2050',
-                                           'orientation':'h',
+                  coloraxis2={"colorbar": {"x": 0.85, 
+                                           "len": 0.75, 
+                                           "y": 0.55, 
+                                           'title':'Potential Adsorbent DACS Capacity<br>Tonnes CO<sub>2</sub> Removed Per Year',
+                                           'orientation':'v',
                                            'titlefont':{'size':10},
                                            'tickfont':{'size':10}
                                            },

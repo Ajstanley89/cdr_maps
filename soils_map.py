@@ -38,6 +38,27 @@ soils_cdr_path_dict = {'carbon_crop':'data\Soils CDR\EVcumulativeCDRbycounty_wit
                        'cover_crop':'data\Soils CDR\SupplyCurve_Cover Crop2025_MIROC_ES2LPerformance.csv'
                       }
 
+summary_soils_path = 'data\Soils CDR\Soils summary data Nov.csv'
+summary_df = pd.read_csv(summary_soils_path, dtype=('county_fips':str))
+
+# Calculate CDR per land area per year
+for practice in ['Carboncrop', 'Covercrop', 'FieldBorder']:
+    summary_df['CDR_per_ha_per_year_' + practice] = ['CDR_per_year_' + practice] / summary_df['TotalCountyAreaHa']
+
+summary_cols = {'CDR_per_year_Carboncrop': ('Carbon Crop', 'CDR per Year'),
+                'CDR_per_ha_per_year_Carboncrop': ('Carbon Crop', 'CDR per Ha per Year'),
+                'Cost_USD_per_Mg_CDR_Carboncrop': ('Carbon Crop', 'Tonnes CDR per USD'),
+                'CDR_per_year_Covercrop': ('Cover Crop', 'CDR per Year'),
+                'CDR_per_ha_per_year_Covercrop': ('Cover Crop', 'CDR per Ha per Year'),
+                'Cost_USD_per_Mg_CDR_Covercrop': ('Cover Crop', 'Tonnes CDR per USD'),
+                'CDR_per_year_FieldBorder': ('Perennial Borders', 'CDR per Year'),
+                'CDR_per_ha_per_year_Carboncrop': ('Carbon Crop', 'CDR per Ha per Year'),
+                'Cost_USD_per_Mg_CDR_FieldBorder': ('Perennial Borders', 'Tonnes CDR per USD'),
+                'Combined_CDR_per_year': ('All Practices', 'CDR per Year'),
+                'Combined_CDR_per_year_per_ha_cropland': ('All Practices', 'CDR per Ha per Year')
+
+                }
+
 # variables for calculated column names
 cum_cdr_col = 'Cumulative Tonnes CDR'
 cdr_per_area_col = 'Cumulative Tonnes CDR per Hectare'
