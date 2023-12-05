@@ -131,7 +131,7 @@ for practice in ['Carbon Crop', 'Perennial Borders', 'Cover Crop']:
                         '<b>County</b>: %{customdata[1]}<br>' +
                         '<b>All Practices CDR Potential</b>: %{customdata[2]:,.2e} Tonnes CO<sub>2</sub> per Year<br>' +
                         '<b>All Practices CDR per Area</b>: %{customdata[3]:,.2e} Tonnes CO<sub>2</sub> per Hectare per Year<br>' +
-                        f'<b>{practice} CDR per Dollar</b>: ' + '%{customdata[4]:,.0f} Tonnes CO<sub>2</sub> per USD<br>' +
+                        f'<b>{practice} Cost</b>: ' + '$%{customdata[4]:,.0f} per Tonne CO<sub>2</sub><br>' +
                         '<extra></extra>'))
     
     # Get rid of color bar. All color bars overlap right now, so it looks neater without them
@@ -160,7 +160,7 @@ fig.update_layout(
             "x": 0.9,
             "len": 0.2,
             "y": 0.8,
-            'title':'Carbon Cropping<br>Tonnes CO<sub>2</sub> per Hectare per Year',
+            'title':'Carbon Cropping<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
             'orientation':'v',
             'titlefont':{'size':fontsize},
             'tickfont':{'size':fontsize}},
@@ -172,7 +172,7 @@ fig.update_layout(
         "colorbar": {"x": 0.9, 
                      "len": 0.2, 
                      "y": 0.6, 
-                     'title':'Perennial Borders<br>Tonnes CO<sub>2</sub> per Hectare per Year',
+                     'title':'Perennial Borders<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
                      'orientation':'v',
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
@@ -184,7 +184,7 @@ fig.update_layout(
         "colorbar": {"x": 0.9, 
                      "len": 0.2, 
                      "y": 0.4,
-                     'title':'Cover Crop<br>Tonnes CO<sub>2</sub> per Hectare per Year',
+                     'title':'Cover Crop<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
                      'orientation':'v',
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
