@@ -3,6 +3,7 @@ from wsgiref.util import shift_path_info
 from requests import get
 import json
 import pandas as pd
+import geopandas as gpd
 import numpy as np
 import math
 import seaborn as sns
@@ -26,71 +27,55 @@ regions_df = pd.read_excel('data/Regions and SVI.xlsx', sheet_name='County_Regio
 regions_df['GEOID'] = regions_df['GEOID'].apply(lambda x: str(x).zfill(5))
 regions_df['FIPS'] = regions_df['FIPS'].apply(lambda x: str(x).zfill(5))
 
-
-
 # read bicrs data
-bicrs_wet_df = pd.read_excel(f'{bicrs_path}\Regional Summary.xlsx', sheet_name=0)
-bicrs_dry_df = pd.read_excel(f'{bicrs_path}\Regional Summary.xlsx', sheet_name=1)
-bicrs_transport_df = pd.read_excel(f'{bicrs_path}\Regional Summary.xlsx', sheet_name=2)
-
-# drop empty rows
-bicrs_wet_df = bicrs_wet_df.dropna(how='all')
-bicrs_dry_df = bicrs_dry_df.dropna(how='all')
-
-# fill sum and cost values forward
-bicrs_wet_df = bicrs_wet_df.ffill()
-bicrs_dry_df = bicrs_dry_df.ffill()
-
-# dict to rename columns
-bicrs_titles = {title: 'Regional ' + title for title in ['CO2 Removal Potential (tonne CO2/year)', '$/tonne CO2 (per technology)', 'Sum CO2 Removal Potential (Million tonnes CO2/year)']}
+bicrs_wet_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='Regional cost and CDR Wet only')
+bicrs_dry_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='Regional cost CDR Dry only')
+bicrs_both_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='Regional cost and CDR Wet + Dry')
+bicrs_transport_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='CO2 by transport mode')
 
 # merge cdr dfs with region dfs
-def merge_regions(df, on='Region'):
+def process_bicrs(df):
     """
-    Merge a bicrs df on region
+    Processes Bicrs Region Dfs
+
+    Drops empty rows and fills other values forward
     """
-    df = df.merge(regions_df, on=on)
-    df = df.merge(county_fips_df, left_on='GEOID', right_on='FIPS')
-    # Rename Columns to make clear that the totals are for the entire region
-    return df.rename(columns=bicrs_titles)
+    df = df.dropna(how='all')
+    return df.ffill()
 
-bicrs_wet_county_df = merge_regions(bicrs_wet_df)
-bicrs_dry_county_df = merge_regions(bicrs_dry_df)
+# Process all dfs
+bicrs_wet_df = process_bicrs(bicrs_wet_df)
+bicrs_dry_df = process_bicrs(bicrs_dry_df)
+bicrs_both_df = process_bicrs(bicrs_both_df)
 
-# geo json file
-from urllib.request import urlopen
-with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-    counties = json.load(response)
+# read file taken from census. This should have Oglala 
+counties_path = 'data\cb_2018_us_county_500k.zip!cb_2018_us_county_500k.shp'
+census_gdf = gpd.read_file(counties_path)
 
-# make subplots for bicrs data
-# Use a button to filter between dry and wet wastes
-"""fig = make_subplots(
-                    rows=1, cols=2,
-                    # column_widths=[0.6, 0.4],
-                    # row_heights=[0.4, 0.6],
-                    specs=[[{"type": "choropleth"}, {"type": "bar"}]],
-                    subplot_titles=['CDR Potential by Region', 'CDR Potential by Technology']
-                    )
-"""
+# merge them together
+census_gdf = census_gdf.merge(regions_df, left_on='GEOID', right_on='FIPS')
+
+# combine regions into one polygon
+regions_gdf = census_gdf[['Region', 'geometry']].dissolve(by='Region')
+
 def make_choro_trace(df, color_scale):
     """
     Takes a df and returns a plotly GO choropleth object
     """
     print(df.columns)
     trace = go.Choropleth(
-                        geojson=counties,
+                        geojson=json.loads(regions_gdf.geometry.to_json()),
                         locationmode="geojson-id",
-                        locations=df['GEO_ID'],
-                        featureidkey='properties.GEO_ID',
-                        z=df['Regional Sum CO2 Removal Potential (Million tonnes CO2/year)'],
+                        locations=df['Region'],
+                        # featureidkey='properties.GEO_ID',
+                        z=df['Sum CO2 Removal Potential (Million tonnes CO2/year)'],
                         zauto=True,
                         coloraxis='coloraxis',
                         # colorscale=color_scale,
-                        customdata=df[['County, State', 'Region', 'Average  regional cost ($/tonne CO2)']],
-                        hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                                        '<b>Region</b>: %{customdata[1]}<br>' +
+                        customdata=df[['Region', 'Average  regional cost ($/tonne CO2)']],
+                        hovertemplate=  '<b>Region</b>: %{customdata[0]}<br>' +
                                         '<b>Regional CDR Potential</b>: %{z:,.0f} Million Tonnes CO<sub>2</sub> per Year<br>' +
-                                        '<b>Regional CDR Average Cost</b>: %{customdata[2]:,.0f} USD per Million Tonnes CO<sub>2</sub><br>' +
+                                        '<b>Regional CDR Average Cost</b>: $%{customdata[1]:,.0f} per Million Tonnes CO<sub>2</sub><br>' +
                                         '<extra></extra>')
     return trace
 
@@ -100,7 +85,7 @@ def make_bar_trace(df):
     """
     df = df.sort_values(by=['Sum CO2 Removal Potential (Million tonnes CO2/year)', 'CO2 Removal Potential (tonne CO2/year)'], ascending=[False, False])
 
-fig = go.Figure(make_choro_trace(bicrs_wet_county_df, 'Purpor'))
+fig = go.Figure(make_choro_trace(bicrs_both_df, 'Viridis'))
 fig.update_geos(scope='usa')
 fig.update_layout(coloraxis_colorscale='Viridis')
 """
@@ -123,29 +108,49 @@ fig.update_layout(
             active=0,
             buttons=[
                         dict(
-                            label="Wet Wastestreams",
+                            label="Total Biomass",
                             method="update",
-                            args=[{"z": [bicrs_wet_county_df['Regional Sum CO2 Removal Potential (Million tonnes CO2/year)']],
-                                'locations': [bicrs_wet_county_df['GEO_ID']],
-                                'customdata': [bicrs_wet_county_df[['County, State', 'Region', 'Average  regional cost ($/tonne CO2)']].values.tolist()]
+                            args=[{"z": [bicrs_both_df['Sum CO2 Removal Potential (Million tonnes CO2/year)']],
+                                'locations': [bicrs_both_df['Region']],
+                                    'customdata': [bicrs_both_df[['Region', 'Average  regional cost ($/tonne CO2)']].values.tolist()]
+                                    },
+                                    {"coloraxis.colorscale": 'Viridis' #[[0, '#EBD985'], [1, '#7DB28C']]
+                                }],
+                            ),
+                        dict(
+                            label="Wet Biomass Waste",
+                            method="update",
+                            args=[{"z": [bicrs_wet_df['Sum CO2 Removal Potential (Million tonnes CO2/year)']],
+                                'locations': [bicrs_wet_df['Region']],
+                                'customdata': [bicrs_wet_df[['Region', 'Average  regional cost ($/tonne CO2)']].values.tolist()]
                                     },
                                 {"coloraxis.colorscale": 'Viridis' #[[0, '#FFFFFF'], [1, '#906E92']]
                                 }],
                         ),
                         dict(
-                            label="Dry Wastestreams",
+                            label="Low Moisture Biomass",
                             method="update",
-                            args=[{"z": [bicrs_dry_county_df['Regional Sum CO2 Removal Potential (Million tonnes CO2/year)']],
-                                'locations': [bicrs_dry_county_df['GEO_ID']],
-                                    'customdata': [bicrs_dry_county_df[['County, State', 'Region', 'Average  regional cost ($/tonne CO2)']].values.tolist()]
+                            args=[{"z": [bicrs_dry_df['Sum CO2 Removal Potential (Million tonnes CO2/year)']],
+                                'locations': [bicrs_dry_df['Region']],
+                                    'customdata': [bicrs_dry_df[['Region', 'Average  regional cost ($/tonne CO2)']].values.tolist()]
                                     },
-                                    {"coloraxis.colorscale": 'Cividis' #[[0, '#EBD985'], [1, '#7DB28C']]
+                                    {"coloraxis.colorscale": 'Viridis' #[[0, '#EBD985'], [1, '#7DB28C']]
                                 }],
                             ),
+
                     ] 
                 )
             ],
-        coloraxis={'colorbar': {'title':'Million Tonnes CO<sub>2</sub><br>Removed by 2050'}}   
+        coloraxis={'colorbar': {'title':'Annual Carbon Removal<br>Potential in 2050'}},
+        title={
+        'text': "Zero cropland change biomass<br>optimal use of 90% of total biomass supply to minimize cost per tonne CO<sub>2</sub>e",
+        'y':1,
+        'x':0.5,
+        'font':{'size':10},
+        'xanchor': 'center',
+        'yanchor': 'top',
+        'yref': 'paper'
+        }   
         )
 fig.show()
 fig.write_html('chapter_maps/bicrs_map.html')
