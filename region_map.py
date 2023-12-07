@@ -14,7 +14,7 @@ from dash import Dash, dcc, html, Input, Output
 import os
 
 # folder holding all forestry cdr data
-bicrs_path = 'data/BiCRS CDR'
+regions_path = 'data/Regional Analysis'
 
 # data from census linking county name and fips
 county_fips_df = pd.read_csv('data\label_geography.csv', dtype={'geography':'str'})
@@ -27,27 +27,6 @@ regions_df = pd.read_excel('data/Regions and SVI.xlsx', sheet_name='County_Regio
 regions_df['GEOID'] = regions_df['GEOID'].apply(lambda x: str(x).zfill(5))
 regions_df['FIPS'] = regions_df['FIPS'].apply(lambda x: str(x).zfill(5))
 
-# read bicrs data
-bicrs_wet_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='Regional cost and CDR Wet only')
-bicrs_dry_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='Regional cost CDR Dry only')
-bicrs_both_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='Regional cost and CDR Wet + Dry')
-bicrs_transport_df = pd.read_excel(f'{bicrs_path}/20231205 Regional Summary.xlsx', sheet_name='CO2 by transport mode')
-
-# merge cdr dfs with region dfs
-def process_bicrs(df):
-    """
-    Processes Bicrs Region Dfs
-
-    Drops empty rows and fills other values forward
-    """
-    df = df.dropna(how='all')
-    return df.ffill()
-
-# Process all dfs
-bicrs_wet_df = process_bicrs(bicrs_wet_df)
-bicrs_dry_df = process_bicrs(bicrs_dry_df)
-bicrs_both_df = process_bicrs(bicrs_both_df)
-
 # read file taken from census. This should have Oglala 
 counties_path = 'data\cb_2018_us_county_500k.zip!cb_2018_us_county_500k.shp'
 census_gdf = gpd.read_file(counties_path)
@@ -58,33 +37,56 @@ census_gdf = census_gdf.merge(regions_df, left_on='GEOID', right_on='FIPS')
 # combine regions into one polygon
 regions_gdf = census_gdf[['Region', 'geometry']].dissolve(by='Region')
 
-def make_choro_trace(df, color_scale):
+# read regions data
+regions_path = 'data/Regional Analysis'
+regions_df = pd.read_csv(f'{regions_path}/R2R Regions - Summary Table.csv', header=[0,1,2], index_col=0)
+
+# loop through each method and process data
+idx = pd.IndexSlice
+
+def process_regional_methods(regions_df, method, unit):
+    """
+    Takes the method and unit from the regional df index, calculates the regional cdr for that method, then returns a df of that method
+    """
+    df = regions_df.loc[:, idx[method, unit, :]]
+    # fill nan with 0
+    df = df.fillna(0)
+
+    # get column names for submethods
+    submethods = list(df.columns.get_level_values(-1))
+    # Join Text for tooltip formating. Should be: Submethod: cdr value unit<br>...
+    text = ['<br>'.join(l) for l in df.apply(lambda row: [f'{sm}: {x} {unit.strip("[]")}' for sm, x in zip(submethods, row)], axis=1).to_list()]
+
+    # create total column for each method
+    df[(method, unit, 'Total')] = df.loc[:, idx[method, unit, :]].sum(axis=1)
+    # column for text
+    df[(method, unit, 'Text')] = text
+    return df
+
+# create list of dfs for each cdr method
+methods_dfs = [process_regional_methods(regions_df, method, unit) for method, unit in {(a, b) for a, b, c in regions_df.columns}]
+
+def make_choro_trace(df, color_scale='blues'):
     """
     Takes a df and returns a plotly GO choropleth object
     """
-    print(df.columns)
     trace = go.Choropleth(
                         geojson=json.loads(regions_gdf.geometry.to_json()),
                         locationmode="geojson-id",
-                        locations=df['Region'],
+                        locations=df.index,
                         # featureidkey='properties.GEO_ID',
-                        z=df['Sum CO2 Removal Potential (Million tonnes CO2/year)'],
+                        z=df.iloc[:, -1],
                         zauto=True,
                         coloraxis='coloraxis',
-                        # colorscale=color_scale,
-                        customdata=df[['Region', 'Average  regional cost ($/tonne CO2)']],
+                        colorscale=color_scale,
+                        customdata=df.reset_index().iloc[:, :-1],
                         hovertemplate=  '<b>Region</b>: %{customdata[0]}<br>' +
-                                        '<b>Regional CDR Potential</b>: %{z:,.0f} Million Tonnes CO<sub>2</sub> per Year<br>' +
-                                        '<b>Regional CDR Average Cost</b>: $%{customdata[1]:,.0f} per Million Tonnes CO<sub>2</sub><br>' +
-                                        '<iframe src="data\Regional Analysis\Region Icons\Regions-Direct storage.png"></iframe>'
-                                        '<extra></extra>')
+                                        f'<b>Regional CDR Potential</b>: %{z:,.0f} {df.columns.get_level_values(1)[0]}' +
+                                        #'<b>Regional CDR Average Cost</b>: $%{customdata[1]:,.0f} per Million Tonnes CO<sub>2</sub><br>' +
+                                        '%{text}'
+                                        '<extra></extra>',
+                        text = df['Text'])
     return trace
-
-def make_bar_trace(df):
-    """
-    Takes a bicrs region df, sorts values, then plots a staced bar chart
-    """
-    df = df.sort_values(by=['Sum CO2 Removal Potential (Million tonnes CO2/year)', 'CO2 Removal Potential (tonne CO2/year)'], ascending=[False, False])
 
 fig = go.Figure(make_choro_trace(bicrs_both_df, 'Viridis'))
 fig.update_geos(scope='usa')

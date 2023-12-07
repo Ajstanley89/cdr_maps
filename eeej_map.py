@@ -1,15 +1,10 @@
-from itertools import count
-from xml.etree.ElementPath import prepare_self
-from requests import get
 import json
 import pandas as pd
 import geopandas as gpd
 import numpy as np
 import math
-import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
-from dash import Dash, dcc, html, Input, Output
 import os
 
 # folder holding all forestry cdr data
@@ -18,13 +13,16 @@ def create_eeej_path(path):
     return "/".join([eeej_path, path])
 
 # data from census linking county name and fips
-county_fips_df = pd.read_csv('data\label_geography.csv', dtype={'geography':'str'})
+county_fips_df = pd.read_csv('data/label_geography.csv', dtype={'geography':'str'})
 county_fips_df = county_fips_df[county_fips_df['geo_level']=='C']
 county_fips_df = county_fips_df.rename(columns={'label':'County, State', 'geography':'FIPS'})
 
 # read file taken from census. This should have Oglala 
-counties_path = 'data\cb_2018_us_county_500k.zip!cb_2018_us_county_500k.shp'
+# counties_path = 'data/cb_2018_us_county_500k.zip!cb_2018_us_county_500k.shp'
+counties_path = 'data/cb_2018_us_county_20m.zip!cb_2018_us_county_20m.shp'
 census_gdf = gpd.read_file(counties_path, dtypes={'GEOID':str})
+# simplify geometry. This may be why filesize is so huge
+# census_gdf.geometry = census_gdf.geometry.simplify(500)
 census_gdf = census_gdf.set_index('GEOID')
 
 # load index to rule them all data
