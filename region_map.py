@@ -122,7 +122,7 @@ updatemenu = go.layout.Updatemenu(
     type="buttons",
     direction="right",
     showactive=True,
-    x=0.7,
+    x=0.8,
     y=1.1,
     buttons=buttons
 )
