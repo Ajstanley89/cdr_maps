@@ -28,7 +28,7 @@ regions_df['GEOID'] = regions_df['GEOID'].apply(lambda x: str(x).zfill(5))
 regions_df['FIPS'] = regions_df['FIPS'].apply(lambda x: str(x).zfill(5))
 
 # read file taken from census. This should have Oglala 
-counties_path = 'data/cb_2018_us_county_20m.zip!cb_2018_us_county_20m.shp'
+counties_path = 'data/cb_2018_us_county_5m.zip!cb_2018_us_county_5m.shp'
 census_gdf = gpd.read_file(counties_path)
 
 # merge them together
@@ -48,6 +48,7 @@ def process_regional_methods(regions_df, method, unit):
     """
     Takes the method and unit from the regional df index, calculates the regional cdr for that method, then returns a df of that method
     """
+    print(method)
     df = regions_df.loc[:, idx[method, unit, :]]
     # fill nan with 0
     df = df.fillna(0)
@@ -63,17 +64,21 @@ def process_regional_methods(regions_df, method, unit):
     df[(method, unit, 'Text')] = text
     return df
 
+# get list of unique methods + their units
+methods_units = regions_df.columns.droplevel(-1).unique()
 # create list of dfs for each cdr method
-methods_dfs = [process_regional_methods(regions_df, method, unit) for method, unit in {(a, b) for a, b, c in regions_df.columns}]
+methods_dfs = [process_regional_methods(regions_df, method, unit) for method, unit in methods_units] # {(a, b) for a, b, c in regions_df.columns}]
 
-def make_choro_trace(df, trace_count, color_scale='Reds'):
+def make_choro_trace(df, trace_count, color_scale='Blues'):
     """
     Takes a df and returns a plotly GO choropleth object
 
     trace_count is the index of the trace. It sets the first trace to visible, and the rest not visible
     """
-    # get unit of measure from column index
-    unit = df.columns.get_level_values(1)[0].strip('[]')
+    # Get CDR method
+    method = df.columns.get_level_values(0)[0]
+     # get unit of measure from column index
+    unit = df.columns.get_level_values(1)[0].strip('[]').title()
     # set graph visibility
     visible = True if trace_count == 0 else False
     # drop multi index columns
@@ -83,11 +88,12 @@ def make_choro_trace(df, trace_count, color_scale='Reds'):
                         geojson=json.loads(regions_gdf.geometry.to_json()),
                         locationmode="geojson-id",
                         locations=df['index'],
-                        # featureidkey='id',
                         z=df['Total'],
                         zauto=True,
                         # coloraxis=f'coloraxis{i+1}',
                         colorscale=color_scale,
+                        colorbar={'title': f'{method}<br>{unit}',
+                                  'len':0.3},
                         customdata= df[['index']],
                         hovertemplate=  '<b>Region</b>: %{customdata[0]}<br>' +
                                         '<b>Regional CDR Potential</b>: %{z:,.0f} ' + unit + '<br>' +
@@ -107,10 +113,24 @@ for i, df in enumerate(methods_dfs):
 
 fig.update_geos(scope='usa')
 
-
 # Colorscales: Blackbody,Bluered,Blues,Cividis,Earth,Electric,Greens,Greys,Hot,Jet,Picnic,Portland,Rainbow,RdBu,Reds,Viridis,YlGnBu,YlOrRd.
 # create buttons to filter between wet and dry
-  
+# need list of dicts for buttons. Creates a button for each method setting that method's visibility to True
+buttons = [dict(method='update', label=label, args=[{'visible':[j == i for j in range(0,5)]}]) for i, label in enumerate(methods_units.get_level_values(0))]
+
+updatemenu = go.layout.Updatemenu(
+    type="buttons",
+    direction="right",
+    showactive=True,
+    x=0.7,
+    y=1.1,
+    buttons=buttons
+)
+
+fig.update_layout(
+    updatemenus=[updatemenu],
+)
+
 fig.show()
 fig.write_html('chapter_maps/regional_map.html')
 
