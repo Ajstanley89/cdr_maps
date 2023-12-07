@@ -17,7 +17,7 @@ import os
 bicrs_path = 'data/BiCRS CDR'
 
 # data from census linking county name and fips
-county_fips_df = pd.read_csv('data\label_geography.csv', dtype={'geography':'str'})
+county_fips_df = pd.read_csv('data/label_geography.csv', dtype={'geography':'str'})
 county_fips_df = county_fips_df[county_fips_df['geo_level']=='C']
 county_fips_df = county_fips_df.rename(columns={'label':'County, State', 'geography':'FIPS'})
 county_fips_df['GEO_ID'] = '0500000US' + county_fips_df['FIPS']
@@ -49,7 +49,7 @@ bicrs_dry_df = process_bicrs(bicrs_dry_df)
 bicrs_both_df = process_bicrs(bicrs_both_df)
 
 # read file taken from census. This should have Oglala 
-counties_path = 'data\cb_2018_us_county_500k.zip!cb_2018_us_county_500k.shp'
+counties_path = 'data/cb_2018_us_county_20m.zip!cb_2018_us_county_20m.shp'
 census_gdf = gpd.read_file(counties_path)
 
 # merge them together

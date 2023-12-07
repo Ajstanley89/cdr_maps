@@ -10,16 +10,16 @@ from dash import Dash, dcc, html, Input, Output
 import os
 
 # folder holding all forestry cdr data
-dac_path = 'data\DAC CDR'
+dac_path = 'data/DAC CDR'
 
 # data from census linking county name and fips
-county_fips_df = pd.read_csv('data\label_geography.csv', dtype={'geography':'str'})
+county_fips_df = pd.read_csv('data/label_geography.csv', dtype={'geography':'str'})
 county_fips_df = county_fips_df[county_fips_df['geo_level']=='C']
 county_fips_df = county_fips_df.rename(columns={'label':'County, State', 'geography':'FIPS'})
 
 # load DAC data
-sorbent_df = pd.read_csv(dac_path + '\Sorbent_HP_2050_Cty_wtavg_11_cutoff-100ktpa.csv', dtype={'county':str})
-solvent_df = pd.read_csv(dac_path + '\Solvent_2050_Cty_wtavg_11.csv', dtype={'county':str})
+sorbent_df = pd.read_csv(dac_path + '/Sorbent_HP_2050_Cty_wtavg_11_cutoff-100ktpa.csv', dtype={'county':str})
+solvent_df = pd.read_csv(dac_path + '/Solvent_2050_Cty_wtavg_11.csv', dtype={'county':str})
 
 # rename columns to something pretty
 sorbent_df = sorbent_df.rename(columns={'county_DACcap_tpa':'Sorbent CDR Capacity',

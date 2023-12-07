@@ -11,10 +11,10 @@ from dash import Dash, dcc, html, Input, Output
 import os
 
 # folder holding all forestry cdr data
-soils_path = 'data\Soils CDR'
+soils_path = 'data/Soils CDR'
 
 # data from census linking county name and fips
-county_fips_df = pd.read_csv('data\label_geography.csv', dtype={'geography':'str'})
+county_fips_df = pd.read_csv('data/label_geography.csv', dtype={'geography':'str'})
 county_fips_df = county_fips_df[county_fips_df['geo_level']=='C']
 county_fips_df = county_fips_df.rename(columns={'label':'County, State', 'geography':'FIPS'})
 
@@ -33,12 +33,12 @@ def process_forestry_cdr(df):
     return df[df['Total Tonnes CDR']>0]
 
 # Soils data is seperated into ifferent files for each of the 3 practices
-soils_cdr_path_dict = {'carbon_crop':'data\Soils CDR\EVcumulativeCDRbycounty_withcost.csv',
-                       'perennial_borders':'data\Soils CDR\SupplyCurve_Conservation Buffer2025_MIROC_ES2LPerformance.csv',
-                       'cover_crop':'data\Soils CDR\SupplyCurve_Cover Crop2025_MIROC_ES2LPerformance.csv'
+soils_cdr_path_dict = {'carbon_crop':'data/Soils CDR/EVcumulativeCDRbycounty_withcost.csv',
+                       'perennial_borders':'data/Soils CDR/SupplyCurve_Conservation Buffer2025_MIROC_ES2LPerformance.csv',
+                       'cover_crop':'data/Soils CDR/SupplyCurve_Cover Crop2025_MIROC_ES2LPerformance.csv'
                       }
 
-summary_soils_path = 'data\Soils CDR\Soils summary data Nov.csv'
+summary_soils_path = 'data/Soils CDR/Soils summary data Nov.csv'
 summary_df = pd.read_csv(summary_soils_path, dtype={'county_fips':str})
 summary_df['county_fips'] = summary_df['county_fips'].apply(lambda x: x.zfill(5))
 

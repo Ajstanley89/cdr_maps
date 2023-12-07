@@ -8,10 +8,10 @@ from dash import Dash, dcc, html, Input, Output
 import os
 
 # folder holding all forestry cdr data
-forestry_path = 'data\Foresty CDR'
+forestry_path = 'data/Foresty CDR'
 
 # data from census linking county name and fips
-county_fips_df = pd.read_csv('data\label_geography.csv', dtype={'geography':'str'})
+county_fips_df = pd.read_csv('data/label_geography.csv', dtype={'geography':'str'})
 county_fips_df = county_fips_df[county_fips_df['geo_level']=='C']
 county_fips_df = county_fips_df.rename(columns={'label':'County, State', 'geography':'FIPS'})
 print(county_fips_df.head())
@@ -31,9 +31,9 @@ def process_forestry_cdr(df):
     return df[df['Total Tonnes CDR']>0]
 
 # forestry data is in 3 different spreadsheets
-ne_cdr_df = pd.read_csv(forestry_path + "\\" + 'NE_Forest Area.csv', dtype={'FID':str})
-se_cdr_df = pd.read_excel(forestry_path + '\\' + 'Total carbon stock change by county restoration 2050 high density.xlsx', dtype={'FIPS_County':str})
-w_cdr_df = pd.read_csv(forestry_path + '\\' + 'western_county_potentials_with_names.csv', dtype={'FIPS_County':str})
+ne_cdr_df = pd.read_csv(forestry_path + "/" + 'NE_Forest Area.csv', dtype={'FID':str})
+se_cdr_df = pd.read_excel(forestry_path + '/' + 'Total carbon stock change by county restoration 2050 high density.xlsx', dtype={'FIPS_County':str})
+w_cdr_df = pd.read_csv(forestry_path + '/' + 'western_county_potentials_with_names.csv', dtype={'FIPS_County':str})
 
 forest_names = ['Northeastern Forests', 'Southeastern Forests', 'Western Forests']
 forestry_cdr_dfs = {forest:process_forestry_cdr(df) for forest, df in zip(forest_names, [ne_cdr_df, se_cdr_df, w_cdr_df])}
