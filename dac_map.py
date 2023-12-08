@@ -70,11 +70,11 @@ for i, trace in enumerate(fig.data, 1):
     trace.update(coloraxis=f"coloraxis{i}")
     
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
-                  coloraxis2={"colorbar": {"x": 0.85, 
+                  coloraxis2={"colorbar": {"x": 0.50, 
                                            "len": 0.75, 
-                                           "y": 0.55, 
+                                           "y": -0.3, 
                                            'title':'Potential Adsorbent DACS Capacity<br>Tonnes CO<sub>2</sub> Removed Per Year',
-                                           'orientation':'v',
+                                           'orientation':'h',
                                            'titlefont':{'size':10},
                                            'tickfont':{'size':10}
                                            },
@@ -82,6 +82,7 @@ fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
                                 'cmax':dac_df['Sorbent CDR Capacity'].quantile(.98),
                                 'cmin':0})
 
+fig.update_coloraxes(colorbar_title_side='top')
 fig.show()
 fig.write_html('chapter_maps/dac_map.html')
 

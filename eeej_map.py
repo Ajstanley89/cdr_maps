@@ -96,11 +96,11 @@ for i, method in enumerate(methods_paths.keys(), 1):
                         '<extra></extra>'))
     
     fig.update_layout({f'coloraxis{i}':{'colorscale':color_dict.get(method, 'Viridis'),
-                                        'colorbar': {"x": 0.9,
+                                        'colorbar': {"x": 0 + (0.2 * i),
                                                     "len": 0.2,
-                                                     "y": 1 - (0.2 * i),
+                                                     "y": -0.3,
                                                     'title': method,
-                                                    'orientation':'v',
+                                                    'orientation':'h',
                                                     'titlefont':{'size':fontsize},
                                                     'tickfont':{'size':fontsize}},
                                         'cmax': 1,
@@ -110,7 +110,7 @@ for i, method in enumerate(methods_paths.keys(), 1):
     
     # Get rid of color bar. All color bars overlap right now, so it looks neater without them
     # fig.update_traces(showscale=False)
-
+fig.update_coloraxes(colorbar_title_side='top')
 fig.update_geos(scope='usa')
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
@@ -119,15 +119,15 @@ for i, trace in enumerate(fig.data, 1):
     trace.update(coloraxis=f"coloraxis{i}")"""
 
 # Add color scales
-fig.update_layout(
-    title={
-        'text': "EEEJ Weighted CDR Index",
-        'y':0.95,
-        'x':0.5,
-        'xanchor': 'center',
-        'yanchor': 'top',
-        'yref': 'paper'
-        }),
+# fig.update_layout(
+#     title={
+#         'text': "EEEJ Weighted CDR Index",
+#         'y':0.95,
+#         'x':0.5,
+#         'xanchor': 'center',
+#         'yanchor': 'top',
+#         'yref': 'paper'
+#         }),
 """ 
 # coloraxis={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
     coloraxis1={

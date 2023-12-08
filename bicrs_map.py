@@ -143,17 +143,27 @@ fig.update_layout(
                     ] 
                 )
             ],
-        coloraxis={'colorbar': {'title':'Annual Carbon Removal<br>Potential in 2050'}},
-        title={
-        'text': "Zero cropland change biomass<br>optimal use of 90% of total biomass supply to minimize cost per tonne CO<sub>2</sub>e",
-        'y':1,
-        'x':0.5,
-        'font':{'size':10},
-        'xanchor': 'center',
-        'yanchor': 'top',
-        'yref': 'paper'
-        }   
+        coloraxis={'colorbar': {'title':'Annual Carbon Removal<br>Potential in 2050 (MMT)',
+                                "x": 0.50, 
+                                "len": 0.75, 
+                                "y": -0.3,
+                                'orientation':'h',
+                                'titlefont':{'size':10},
+                                'tickfont':{'size':10}
+                                }
+                   },
+        # title={
+        # 'text': "Zero cropland change biomass<br>optimal use of 90% of total biomass supply to minimize cost per tonne CO<sub>2</sub>e",
+        # 'y':1,
+        # 'x':0.5,
+        # 'font':{'size':10},
+        # 'xanchor': 'center',
+        # 'yanchor': 'top',
+        # 'yref': 'paper'
+        # }   
         )
+
+fig.update_coloraxes(colorbar_title_side='top')
 fig.show()
 fig.write_html('chapter_maps/bicrs_map.html')
 

@@ -86,36 +86,37 @@ fig.update_layout(
     coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
     coloraxis2={
         "colorbar": {
-            "x": 0.9,
+            "x": 0.3,
             "len": 0.2,
-            "y": 0.8,
-            'title':'Northeastern Forests<br>CDR Potential by 2050',
+            "y": -0.3,
+            'title':'Northeastern Forests<br>CDR Potential by 2050 (Tonnes CO<sub>2</sub>)',
             'orientation':'h',
             'titlefont':{'size':fontsize},
             'tickfont':{'size':fontsize}},
         "colorscale":'greens',
     },
     coloraxis3={
-        "colorbar": {"x": 0.9, 
+        "colorbar": {"x": 0.5, 
                      "len": 0.2, 
-                     "y": 0.6, 
-                     'title':'Southeastern Forests<br>CDR Potential by 2050',
+                     "y": -0.3, 
+                     'title':'Southeastern Forests<br>CDR Potential by 2050 (Tonnes CO<sub>2</sub>)',
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
         "colorscale":'blues'
     },
     coloraxis4={
-        "colorbar": {"x": 0.9, 
+        "colorbar": {"x": 0.7, 
                      "len": 0.2, 
-                     "y": 0.4,
-                     'title':'Western Forests<br>CDR Potential by 2050',
+                     "y": -0.3,
+                     'title':'Western Forests<br>CDR Potential by 2050 (Tonnes CO<sub>2</sub>)',
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
         "colorscale": 'reds',
             })
 
+fig.update_coloraxes(colorbar_title_side='top')
 fig.show()
 fig.write_html('chapter_maps/forestry_map.html')
 
