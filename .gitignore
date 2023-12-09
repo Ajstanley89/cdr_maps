@@ -1,5 +1,7 @@
 config.py
 
+CO2 Transport Exploration.ipynb
+
 # shapefiles are huge, so ignore them
 data\Geostorage\Lineshapes
 # ignore large soils files
