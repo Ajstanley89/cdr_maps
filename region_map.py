@@ -33,7 +33,8 @@ regions_df['FIPS'] = regions_df['FIPS'].apply(lambda x: str(x).zfill(5))
 # colors for regions
 colors_df = pd.read_excel('data/Regions and SVI.xlsx', sheet_name='RGB', dtype={'Hex Color #': str})
 colors_df['Hex Color #'] = '#' + colors_df['Hex Color #']
-colors_set = colors_df['Hex Color #'].to_list()
+colors_df['RGB'] = colors_df.apply(lambda row: f"rgb({row['R']}, {row['G']}, {row['B']})", axis=1)
+colors_set = colors_df['RGB'].to_list()
 
 # copy pasta from https://towardsdatascience.com/discrete-colour-scale-in-plotly-python-26f2d6e21c77
 def generateDiscreteColourScale(colour_set):
@@ -149,6 +150,11 @@ def make_choro_trace(df, region, color_scale='Rainbow'):
     df['Region'] = df.index
     df['Count'] = 1 # range(len(df)) # random.sample(range(len(df)), len(df))
     print(df.columns)
+    print(df.loc[region, ['Region', 'maxcol1', 'maxcol2']])
+
+    max1 = df.loc[region, 'maxcol1']
+    max2 = df.loc[region, 'maxcol2']
+
     trace = go.Choropleth(
                         geojson=json.loads(regions_gdf.geometry.to_json()),
                         locationmode="geojson-id",
@@ -159,11 +165,11 @@ def make_choro_trace(df, region, color_scale='Rainbow'):
                         
                         #coloraxis='coloraxis',
                         colorscale=color_scale,
-                        customdata=df.loc[region, ['Region', 'maxcol1', 'maxcol2']],
+                        customdata= [[region, max1, max2],], #df.loc[region, ['Region', 'maxcol1', 'maxcol2']].T,
                         hovertemplate=  '<b>Region</b>: %{customdata[0]}<br>' +
                                         '<b>Top Two Methods: <b><br>' +
-                                        '%{customdata[1][2]}<br>' +
-                                        '%{customdata[2][2]}<br>' +
+                                        '%{customdata[1]}<br>' +
+                                        '%{customdata[2]}<br>' +
                                         '<extra></extra>')
     return trace
 
@@ -181,7 +187,7 @@ for i, region in enumerate(regions_top2_df.index):
     # filter df for region
     # temp_df = pd.DataFrame(regions_top2_df.loc[region, :])
 
-    fig.add_trace(make_choro_trace(regions_top2_df, region, [[0, 'green'], [1, 'green']]))
+    fig.add_trace(make_choro_trace(regions_top2_df, region, [[0, color], [1, color]]))
 fig.update_geos(scope='usa')
 
 # Colorscales: Blackbody,Bluered,Blues,Cividis,Earth,Electric,Greens,Greys,Hot,Jet,Picnic,Portland,Rainbow,RdBu,Reds,Viridis,YlGnBu,YlOrRd.
