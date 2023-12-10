@@ -1,3 +1,4 @@
+from decimal import HAVE_CONTEXTVAR
 from requests import get
 import json
 import pandas as pd
@@ -102,6 +103,9 @@ fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
 fig.add_trace(go.Choropleth(geojson=json.loads(basalt_gdf.geometry.to_json()),
                                locations=[0],
                                colorscale=[[0, '#FF7F7F'], [1, '#FF7F7F']],
+                               text='Basalt<br>Cost Unknown',
+                               hoverinfo='text',
+                               showscale=False,
                                z=[1]))
 """
 for lng, lat in zip(lngs, lats):
@@ -118,7 +122,15 @@ for lng, lat in zip(lngs, lats):
                                 legendgroup = 'Basalt',
                                 showlegend = 'Basalt' not in {d.name for d in fig.data}))
 """
-    
+# Fake trace to showlegend for basalt
+fig.add_trace(go.Scattergeo(
+                            lon=[None],
+                            lat=[None],
+                            mode="lines",
+                            name="Basalt (Cost Unknown)",
+                            line=dict(color="#FF7F7F"),
+                            )
+                )
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.update_coloraxes(colorbar_title_side='top')
 fig.show()
