@@ -135,6 +135,8 @@ fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.update_coloraxes(colorbar_title_side='top')
 fig.show()
 fig.write_html('chapter_maps/geostorage_map.html')
+fig.update(layout_showlegend=False)
+fig.write_html('chapter_maps/geostorage_map_nocbar.html')
 
 
 

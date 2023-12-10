@@ -166,6 +166,9 @@ fig.update_layout(
 fig.update_coloraxes(colorbar_title_side='top')
 fig.show()
 fig.write_html('chapter_maps/bicrs_map.html')
+# save version with no cbar
+fig.update(layout_showlegend=False)
+fig.write_html('chapter_maps/bicrs_map_nocbar.html')
 
 
 

@@ -86,7 +86,7 @@ fig.update_layout(
     coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
     coloraxis2={
         "colorbar": {
-            "x": 0.5,
+            "x": 0.8,
             "len": 0.2,
             "y": -0.3,
             'title':'Northeastern Forests<br>CDR Potential by 2050 (Tonnes CO<sub>2</sub>)',
@@ -98,7 +98,7 @@ fig.update_layout(
     coloraxis3={
         "colorbar": {"x": 0.5, 
                      "len": 0.2, 
-                     "y": -0.6, 
+                     "y": -0.3, 
                      'title':'Southeastern Forests<br>CDR Potential by 2050 (Tonnes CO<sub>2</sub>)',
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
@@ -106,9 +106,9 @@ fig.update_layout(
         "colorscale":'blues'
     },
     coloraxis4={
-        "colorbar": {"x": 0.5, 
+        "colorbar": {"x": 0.2, 
                      "len": 0.2, 
-                     "y": -0.9,
+                     "y": -0.3,
                      'title':'Western Forests<br>CDR Potential by 2050 (Tonnes CO<sub>2</sub>)',
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
@@ -119,6 +119,10 @@ fig.update_layout(
 fig.update_coloraxes(colorbar_title_side='top')
 fig.show()
 fig.write_html('chapter_maps/forestry_map.html')
+# save file without legend
+fig.update(layout_showlegend=False)
+fig.write_html('chapter_maps/forestry_map_nocbar.html')
+
 
 
 

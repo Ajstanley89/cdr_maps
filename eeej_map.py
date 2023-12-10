@@ -96,9 +96,9 @@ for i, method in enumerate(methods_paths.keys(), 1):
                         '<extra></extra>'))
     
     fig.update_layout({f'coloraxis{i}':{'colorscale':color_dict.get(method, 'Viridis'),
-                                        'colorbar': {"x": 0.5,
+                                        'colorbar': {"x": 0 + (0.2 * i),
                                                     "len": 0.2,
-                                                     "y": -0.3 - (0.3 * i),
+                                                     "y": -0.3,
                                                     'title': method,
                                                     'orientation':'h',
                                                     'titlefont':{'size':fontsize},
@@ -183,6 +183,8 @@ for i, trace in enumerate(fig.data, 1):
 
 fig.show()
 fig.write_html('chapter_maps/eeej_map.html', full_html=False, include_plotlyjs='cdn')
+fig.update(layout_showlegend=False)
+fig.write_html('chapter_maps/eeej_map_nocbar.html')
 
 
 
