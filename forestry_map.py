@@ -67,7 +67,7 @@ for key, df in forestry_cdr_dfs.items():
         name=key,
         customdata=df[['County, State', 'Total Tonnes CDR']],
         hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                        '<b>CDR Potential by 2050</b>: %{z:,.0f} Tonnes CO<sub>2</sub><br>' +
+                        '<b>CDR Potential by 2050</b>: %{z:,.2e} Tonnes CO<sub>2</sub><br>' +
                         '<extra></extra>'))
     
     # Get rid of color bar. All color bars overlap right now, so it looks neater without them
