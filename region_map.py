@@ -154,6 +154,10 @@ def make_choro_trace(df, region, color_scale='Rainbow'):
 
     max1 = df.loc[region, 'maxcol1']
     max2 = df.loc[region, 'maxcol2']
+    
+    customdata= [region, max1, max2] #df.loc[region, ['Region', 'maxcol1', 'maxcol2']].T,
+    str1 = f'{customdata[1][0]} {customdata[1][2]}'
+    str2 = f'{customdata[2][0]} {customdata[2][2]}'
 
     trace = go.Choropleth(
                         geojson=json.loads(regions_gdf.geometry.to_json()),
@@ -168,8 +172,9 @@ def make_choro_trace(df, region, color_scale='Rainbow'):
                         customdata= [[region, max1, max2],], #df.loc[region, ['Region', 'maxcol1', 'maxcol2']].T,
                         hovertemplate=  '<b>Region</b>: %{customdata[0]}<br>' +
                                         '<b>Top Two Methods: <b><br>' +
-                                        '%{customdata[1]}<br>' +
-                                        '%{customdata[2]}<br>' +
+                                         str1 +
+                                         '<br>' +
+                                         str2 +
                                         '<extra></extra>')
     return trace
 

@@ -96,9 +96,9 @@ for i, method in enumerate(methods_paths.keys(), 1):
                         '<extra></extra>'))
     
     fig.update_layout({f'coloraxis{i}':{'colorscale':color_dict.get(method, 'Viridis'),
-                                        'colorbar': {"x": 0 + (0.2 * i),
+                                        'colorbar': {"x": 0.5,
                                                     "len": 0.2,
-                                                     "y": -0.3,
+                                                     "y": -0.3 - (0.3 * i),
                                                     'title': method,
                                                     'orientation':'h',
                                                     'titlefont':{'size':fontsize},

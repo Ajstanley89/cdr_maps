@@ -157,9 +157,9 @@ fig.update_layout(
     coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
     coloraxis2={
         "colorbar": {
-            "x": 0.3,
+            "x": 0.5,
             "len": 0.2,
-            "y": -0.3,
+            "y": -0.4,
             'title':'Carbon Cropping<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
             'orientation':'h',
             'titlefont':{'size':fontsize},
@@ -171,7 +171,7 @@ fig.update_layout(
     coloraxis3={
         "colorbar": {"x": 0.5, 
                      "len": 0.2, 
-                     "y": -0.3, 
+                     "y": -0.8, 
                      'title':'Perennial Borders<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
@@ -181,9 +181,9 @@ fig.update_layout(
         'cmin': 0
     },
     coloraxis4={
-        "colorbar": {"x": 0.7, 
+        "colorbar": {"x": 0.5, 
                      "len": 0.2, 
-                     "y": -0.3,
+                     "y": -1.2,
                      'title':'Cover Crop<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
