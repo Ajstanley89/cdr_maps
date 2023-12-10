@@ -83,10 +83,12 @@ fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
                                 'cmin':0})
 
 fig.update_coloraxes(colorbar_title_side='top')
-fig.show()
 fig.write_html('chapter_maps/dac_map.html')
 # save version with no cbar
-fig.update(layout_showlegend=False)
+for i in range(len(fig.data)):
+    fig.update_layout({f'coloraxis{i+1}':{'showscale':False}})
+
+fig.show()
 fig.write_html('chapter_maps/dac_map_nocbar.html')
 
 

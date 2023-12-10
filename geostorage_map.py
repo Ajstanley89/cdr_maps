@@ -133,9 +133,13 @@ fig.add_trace(go.Scattergeo(
                 )
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.update_coloraxes(colorbar_title_side='top')
-fig.show()
 fig.write_html('chapter_maps/geostorage_map.html')
-fig.update(layout_showlegend=False)
+
+# save version with no color bars
+for i in range(len(fig.data)):
+    fig.update_layout({f'coloraxis{i+1}':{'showscale':False}})
+
+fig.show()
 fig.write_html('chapter_maps/geostorage_map_nocbar.html')
 
 

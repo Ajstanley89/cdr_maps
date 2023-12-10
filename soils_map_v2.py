@@ -194,9 +194,12 @@ fig.update_layout(
             })
 
 fig.update_coloraxes(colorbar_title_side='top')
-fig.show()
 fig.write_html('chapter_maps/soils_map.html')
-fig.update(layout_showlegend=False)
+
+for i in range(len(fig.data)):
+    fig.update_layout({f'coloraxis{i+1}':{'showscale':False}})
+
+fig.show()
 fig.write_html('chapter_maps/soils_map_nocbar.html')
 
 

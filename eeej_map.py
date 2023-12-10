@@ -104,7 +104,8 @@ for i, method in enumerate(methods_paths.keys(), 1):
                                                     'titlefont':{'size':fontsize},
                                                     'tickfont':{'size':fontsize}},
                                         'cmax': 1,
-                                        'cmin': 0
+                                        'cmin': 0,
+                                        #'showscale': False
                                         }                   
                         })
     
@@ -114,76 +115,12 @@ fig.update_coloraxes(colorbar_title_side='top')
 fig.update_geos(scope='usa')
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-"""# assign each trace to new color axis
-for i, trace in enumerate(fig.data, 1):
-    trace.update(coloraxis=f"coloraxis{i}")"""
-
-# Add color scales
-# fig.update_layout(
-#     title={
-#         'text': "EEEJ Weighted CDR Index",
-#         'y':0.95,
-#         'x':0.5,
-#         'xanchor': 'center',
-#         'yanchor': 'top',
-#         'yref': 'paper'
-#         }),
-""" 
-# coloraxis={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
-    coloraxis1={
-        "colorbar": {
-            "x": 0.9,
-            "len": 0.2,
-            "y": 0.8,
-            'title':'Forests',
-            'orientation':'v',
-            'titlefont':{'size':fontsize},
-            'tickfont':{'size':fontsize}},
-        "colorscale":color_dict.get('Forests'),
-        'cmax':1,
-        'cmin': 0
-    },
-    coloraxis2={
-        "colorbar": {"x": 0.9, 
-                     "len": 0.2, 
-                     "y": 0.6, 
-                     'title':'Soils',
-                     'orientation':'v',
-                     'titlefont':{'size':fontsize},
-                     'tickfont':{'size':fontsize}},
-        "colorscale":color_dict.get('Soils', 'Viridis'),
-        'cmax': 1,
-        'cmin': 0
-    },
-    coloraxis3={
-        "colorbar": {"x": 0.9, 
-                     "len": 0.2, 
-                     "y": 0.4,
-                     'title':'BiCRS',
-                     'orientation':'v',
-                     'titlefont':{'size':fontsize},
-                     'tickfont':{'size':fontsize}},
-        "colorscale": color_dict.get('BiCRS', 'Viridis'),
-        'cmax': 1,
-        'cmin': 0
-            },
-    coloraxis={
-        "colorbar": {"x": 0.9, 
-                     "len": 0.2, 
-                     "y": 0.2,
-                     'title':'DACS',
-                     'orientation':'v',
-                     'titlefont':{'size':fontsize},
-                     'tickfont':{'size':fontsize}},
-        "colorscale": color_dict.get('DACS', 'Viridis'),
-        'cmax': 1,
-        'cmin': 0
-            })
-"""
-
-fig.show()
+#fig.show()
 fig.write_html('chapter_maps/eeej_map.html', full_html=False, include_plotlyjs='cdn')
-fig.update(layout_showlegend=False)
+# turn off legend for all caxis
+for i in range(len(fig.data)):
+    fig.update_layout({f'coloraxis{i+1}':{'showscale':False}})
+fig.show()
 fig.write_html('chapter_maps/eeej_map_nocbar.html')
 
 
