@@ -86,7 +86,6 @@ def make_bar_trace(df):
     df = df.sort_values(by=['Sum CO2 Removal Potential (Million tonnes CO2/year)', 'CO2 Removal Potential (tonne CO2/year)'], ascending=[False, False])
 
 fig = go.Figure(make_choro_trace(bicrs_both_df, 'Viridis'))
-print(fig.data)
 fig.update_geos(scope='usa')
 fig.update_layout(coloraxis_colorscale='Viridis')
 
@@ -103,11 +102,14 @@ fig.add_trace(
 fig.update_layout(
     updatemenus=[
         dict(
-            type="buttons",
-            direction="right",
-            x=0.7,
-            y=1.2,
-            active=0,
+            type="dropdown",
+            direction="down",
+            pad={"r": 10, "t": 10},
+            showactive=True,
+            x=0.5,
+            xanchor="center",
+            y=1.1,
+            yanchor="top",
             buttons=[
                         dict(
                             label="Total Biomass",
