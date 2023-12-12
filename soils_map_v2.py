@@ -154,6 +154,8 @@ fontsize=10
 for i, trace in enumerate(fig.data, 1):
     trace.update(coloraxis=f"coloraxis{i}")
 
+cbar_title_units = 'CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per 100 Hectares per Year'
+
 # Add color scales
 fig.update_layout(
     coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
@@ -162,7 +164,7 @@ fig.update_layout(
             "x": 0.2,
             "len": 0.2,
             "y": -0.3,
-            'title':'Carbon Cropping<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
+            'title':'Carbon Cropping<br>' + cbar_title_units,
             'orientation':'h',
             'titlefont':{'size':fontsize},
             'tickfont':{'size':fontsize}},
@@ -174,7 +176,7 @@ fig.update_layout(
         "colorbar": {"x": 0.5, 
                      "len": 0.2, 
                      "y": -.3, 
-                     'title':'Perennial Borders<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
+                     'title':'Perennial Borders<br>' + cbar_title_units,
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
@@ -186,7 +188,7 @@ fig.update_layout(
         "colorbar": {"x": 0.8, 
                      "len": 0.2, 
                      "y": -.3,
-                     'title':'Cover Crop<br>CO<sub>2</sub> Removal Potential Over Total County Area<br>Tonnes CO<sub>2</sub> per Hectare per Year',
+                     'title':'Cover Crop<br>' + cbar_title_units,
                      'orientation':'h',
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
