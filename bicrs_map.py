@@ -166,13 +166,13 @@ fig.update_layout(
         )
 
 fig.update_coloraxes(colorbar_title_side='top')
-fig.write_html('chapter_maps/bicrs_map.html')
+fig.write_html('chapter_maps/bicrs_map.html', auto_play=False)
 # save version with no cbar
 for i in range(len(fig.data)):
     fig.update_layout({f'coloraxis{i+1}':{'showscale':False}})
     
 fig.show()
-fig.write_html('chapter_maps/bicrs_map_nocbar.html')
+fig.write_html('chapter_maps/bicrs_map_nocbar.html', auto_play=False)
 
 
 
