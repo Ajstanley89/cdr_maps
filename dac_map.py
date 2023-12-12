@@ -45,6 +45,9 @@ with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-c
 fig = go.Figure(go.Choropleth())
 fig.update_geos(scope='usa')
 
+# Convert to million tons
+dac_df['Sorbent CDR Capacity'] = dac_df['Sorbent CDR Capacity']/1000000
+
 # geostorage map only needs one trace
 fig.add_trace(trace=go.Choropleth(
     geojson=counties,
@@ -57,7 +60,7 @@ fig.add_trace(trace=go.Choropleth(
     colorscale='greens',
     customdata=dac_df[['County, State', 'Sorbent CDR Capacity', 'Sorbent Cost', 'Solvent Region CDR Capacity', 'Solvent Weighted Average Cost']],
     hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                    '<b>Adsorbent DACS CDR Potential </b>: %{customdata[1]:,.2e} Tonnes CO<sub>2</sub> Per Year<br>' +
+                    '<b>Adsorbent DACS CDR Potential </b>: %{customdata[1]:,.0f} Million Tonnes CO<sub>2</sub> Per Year<br>' +
                     '<b>Adsorbent CDR Cost</b>: %{customdata[2]:,.0f} USD per Tonne CO<sub>2</sub><br>' +
                     # '<b>Regional Solvent CDR Potential by 2050</b>: %{customdata[3]:,.0f} Tonnes CO<sub>2</sub><br>' +
                     # '<b>Regional Solvent CDR Cost</b>: %{customdata[4]:,.2f} USD per Tonne CO<sub>2</sub><br>' +

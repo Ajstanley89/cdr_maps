@@ -106,6 +106,16 @@ with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-c
 fig = go.Figure(go.Choropleth())
 fig.update_geos(scope='usa')
 
+# Convert to million tons
+#summary_df[('All Practices', 'CDR per Year')] = summary_df[('All Practices', 'CDR per Year')] /1000000
+
+# convert per area to 100 Ha
+summary_df[('All Practices', cdr_per_area_col)] = summary_df[('All Practices', cdr_per_area_col)] * 100
+summary_df[('All Practices', cdr_per_area_col)] = summary_df[('All Practices', cdr_per_area_col)].round(2)
+
+# Round all practicescdr per year for readability
+summary_df[('All Practices', cdr_per_year_col)] = summary_df[('All Practices', cdr_per_year_col)].round(-2)
+
 # create a trace for each practice
 for practice in ['Carbon Crop', 'Perennial Borders', 'Cover Crop']:
     # filter for practice
@@ -129,8 +139,8 @@ for practice in ['Carbon Crop', 'Perennial Borders', 'Cover Crop']:
                        ('All Practices', cdr_per_year_col), ('All Practices', cdr_per_area_col), (practice, cdr_cost_col)]],
         hovertemplate='<b>Top Practice per Area</b>: %{customdata[0]}<br>' +
                         '<b>County</b>: %{customdata[1]}<br>' +
-                        '<b>All Practices CDR Potential</b>: %{customdata[2]:,.2e} Tonnes CO<sub>2</sub> per Year<br>' +
-                        '<b>All Practices CDR per Area</b>: %{customdata[3]:,.2e} Tonnes CO<sub>2</sub> per Hectare per Year<br>' +
+                        '<b>All Practices CDR Potential</b>: %{customdata[2]:,.0f} Tonnes CO<sub>2</sub> per Year<br>' +
+                        '<b>All Practices CDR per Area</b>: %{customdata[3]:,.2f} Tonnes CO<sub>2</sub> per 100 Hectare per Year<br>' +
                         f'<b>{practice} Cost</b>: ' + '$%{customdata[4]:,.0f} per Tonne CO<sub>2</sub><br>' +
                         '<extra></extra>'))
     
@@ -146,14 +156,6 @@ for i, trace in enumerate(fig.data, 1):
 
 # Add color scales
 fig.update_layout(
-    # title={
-    #     'text': "$40 per Tonne CO<sub>2</sub>e",
-    #     'y':0.95,
-    #     'x':0.5,
-    #     'xanchor': 'center',
-    #     'yanchor': 'top',
-    #     'yref': 'paper'
-    #     },
     coloraxis1={"colorbar": {"x": -0.2, "len": 0.5, "y": 0.8}},
     coloraxis2={
         "colorbar": {

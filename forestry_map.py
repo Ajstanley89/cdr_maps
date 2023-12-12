@@ -57,7 +57,7 @@ for key, df in forestry_cdr_dfs.items():
         locationmode="geojson-id",
         locations=df['GEO_ID'],
         featureidkey='properties.GEO_ID',
-        z=df['Total Tonnes CDR'].round(-3),
+        z=df['Total Tonnes CDR'].round(-3)/1000000,
         zmin=df['Total Tonnes CDR'].min(),
         zmax=df['Total Tonnes CDR'].max(),
         colorscale=forest_color_scales.get(key, 'viridis'),
@@ -67,7 +67,7 @@ for key, df in forestry_cdr_dfs.items():
         name=key,
         customdata=df[['County, State', 'Total Tonnes CDR']],
         hovertemplate='<b>County</b>: %{customdata[0]}<br>' +
-                        '<b>CDR Potential by 2050</b>: %{z:,.2e} Tonnes CO<sub>2</sub><br>' +
+                        '<b>CDR Potential by 2050</b>: %{z:,.2f} Million Tonnes CO<sub>2</sub><br>' +
                         '<extra></extra>'))
     
     # Get rid of color bar. All color bars overlap right now, so it looks neater without them
