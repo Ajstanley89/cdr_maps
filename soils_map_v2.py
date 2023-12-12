@@ -140,7 +140,7 @@ for practice in ['Carbon Crop', 'Perennial Borders', 'Cover Crop']:
         hovertemplate='<b>Top Practice per Area</b>: %{customdata[0]}<br>' +
                         '<b>County</b>: %{customdata[1]}<br>' +
                         '<b>All Practices CDR Potential</b>: %{customdata[2]:,.0f} Tonnes CO<sub>2</sub> per Year<br>' +
-                        '<b>All Practices CDR per Area</b>: %{customdata[3]:,.2f} Tonnes CO<sub>2</sub> per 100 Hectare per Year<br>' +
+                        '<b>All Practices CDR per Area</b>: %{customdata[3]:,.2f} Tonnes CO<sub>2</sub> per 100 Hectares per Year<br>' +
                         f'<b>{practice} Cost</b>: ' + '$%{customdata[4]:,.0f} per Tonne CO<sub>2</sub><br>' +
                         '<extra></extra>'))
     
