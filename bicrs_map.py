@@ -75,7 +75,7 @@ def make_choro_trace(df, color_scale):
                         customdata=df[['Region', 'Average  regional cost ($/tonne CO2)']],
                         hovertemplate=  '<b>Region</b>: %{customdata[0]}<br>' +
                                         '<b>Regional CDR Potential</b>: %{z:,.0f} Million Tonnes CO<sub>2</sub> per Year<br>' +
-                                        '<b>Regional CDR Average Cost</b>: $%{customdata[1]:,.0f} per Million Tonnes CO<sub>2</sub><br>' +
+                                        '<b>Regional CDR Average Cost</b>: $%{customdata[1]:,.0f} per Tonne CO<sub>2</sub><br>' +
                                         '<extra></extra>')
     return trace
 
