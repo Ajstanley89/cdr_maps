@@ -1,6 +1,6 @@
 ﻿,Biomass,Biomass,Biomass,Biomass,Transportation,Transportation,Transportation,Direct Air Capture,Direct Air Capture,Bio-Carbon Storage,Bio-Carbon Storage,Geo-Carbon Storage Area,Geo-Carbon Storage Area,Geo-Carbon Storage Area
 ,[million tonnes per year],[million tonnes per year],[million tonnes per year],[million tonnes per year],[million tonnes per year],[million tonnes per year],[million tonnes per year],[million tonnes CO2/year],[million tonnes CO2/year],[million tonnes CO2e/year],[million tonnes CO2e/year],[million hectares],[million hectares],[million hectares]
-Region,Agriculture Resuides,Forest Biomass,Municipal Solid Waste,Carbon Crop,Truck,Rail + Truck,Pipeline,Adsorbent DACS,Solvent DACS,Forest Growth,Cropland Soils,Conventional (at <$40/tonne CO2),Prospective,Basalt
+Region,Agriculture Residues,Forest Biomass,Municipal Solid Waste,Carbon Crop,Truck,Rail + Truck,Pipeline,Adsorbent DACS,Solvent DACS,Forest Growth,Cropland Soils,Conventional (at <$40/tonne CO2),Prospective,Basalt
 Alaska,0,2,0.1,0,,,,206,686,0.8,,22,35.3,14.3
 Appalachia,1.4,16.9,4.3,4.6,21.8,0,0,6,1300,119,0.35,24,13.2,0.4
 California Central Valley,8.3,0.1,1.2,0.1,5.5,0,0,75,3,-0.1,0.33,5.4,0.4,0.2
