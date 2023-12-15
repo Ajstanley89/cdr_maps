@@ -97,7 +97,7 @@ fig.add_trace(
 )
 """
 
-# Colorscales: Blackbody,Bluered,Blues,Cividis,Earth,Electric,Greens,Greys,Hot,Jet,Picnic,Portland,Rainbow,RdBu,Reds,Viridis,YlGnBu,YlOrRd.
+"""
 # create buttons to filter between wet and dry
 fig.update_layout(
     updatemenus=[
@@ -164,6 +164,7 @@ fig.update_layout(
         # 'yref': 'paper'
         # }   
         )
+"""
 
 fig.update_coloraxes(colorbar_title_side='top')
 fig.write_html('chapter_maps/bicrs_map.html', auto_play=False)

@@ -131,9 +131,9 @@ for practice in ['Carbon Crop', 'Perennial Borders', 'Cover Crop']:
         locations=df['GEO_ID'],
         featureidkey='properties.GEO_ID',
         # z=np.log10(df[('Cumulative', cdr_per_area_col)]),
-        z=df[(practice, cdr_per_area_col)],
-        zmax=df[(practice, cdr_per_area_col)].quantile(.95),
-        zmin=df[(practice, cdr_per_area_col)].min(),
+        z=df[(practice, cdr_per_area_col)] * 100,
+        zmax=df[(practice, cdr_per_area_col)].quantile(.95) * 100,
+        zmin=df[(practice, cdr_per_area_col)].min() * 100,
         colorscale=color_dict.get(practice, 'reds'),
         customdata=df[[('All Practices', 'Top Practice'), ('County, State', ''), 
                        ('All Practices', cdr_per_year_col), ('All Practices', cdr_per_area_col), (practice, cdr_cost_col)]],
@@ -169,7 +169,7 @@ fig.update_layout(
             'titlefont':{'size':fontsize},
             'tickfont':{'size':fontsize}},
         "colorscale":color_dict.get('Carbon Crop'),
-        'cmax':summary_df[('Carbon Crop', cdr_per_area_col)].quantile(0.98),
+        'cmax':summary_df[('Carbon Crop', cdr_per_area_col)].quantile(0.98) * 100,
         'cmin': 0
     },
     coloraxis3={
@@ -181,7 +181,7 @@ fig.update_layout(
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
         "colorscale":color_dict.get('Perennial Borders', 'Viridis'),
-        'cmax': summary_df[('Perennial Borders', cdr_per_area_col)].quantile(0.98),
+        'cmax': summary_df[('Perennial Borders', cdr_per_area_col)].quantile(0.98) * 100,
         'cmin': 0
     },
     coloraxis4={
@@ -193,7 +193,7 @@ fig.update_layout(
                      'titlefont':{'size':fontsize},
                      'tickfont':{'size':fontsize}},
         "colorscale": color_dict.get('Cover Crop', 'Viridis'),
-        'cmax': summary_df[('Cover Crop', cdr_per_area_col)].quantile(0.98),
+        'cmax': summary_df[('Cover Crop', cdr_per_area_col)].quantile(0.98) * 100,
         'cmin': 0
             })
 
